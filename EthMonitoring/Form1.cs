@@ -309,7 +309,7 @@ namespace EthMonitoring
                             if (this.hostsList.SelectedItems[0].SubItems[0].Text == entry.Value)
                             {
                                 settings.hosts.Remove(entry.Key);
-                            }
+                            } 
                         }
                     }
 
