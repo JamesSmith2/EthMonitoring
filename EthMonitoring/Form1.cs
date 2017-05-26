@@ -86,6 +86,10 @@ namespace EthMonitoring
 
                     settings.hosts.Add(hostName.Text, hostField.Text);
                     settings.Save();
+
+                    // Clear values
+                    hostField.Text = "";
+                    hostName.Text = "";
                 }
             } catch(Exception ex)
             {
@@ -129,80 +133,99 @@ namespace EthMonitoring
                     {
                         foreach (ListViewItem hostRow in this.hostsList.Items)
                         {
-                            var clientSocket = new System.Net.Sockets.TcpClient();
+
                             string host = hostRow.SubItems[0].Text;
                             string name = hostRow.SubItems[1].Text;
+
+                            try {
+                                var clientSocket = new System.Net.Sockets.TcpClient();
                             
-                            if (clientSocket.ConnectAsync(host, 3333).Wait(1000))
-                            {
-                                string get_menu_request = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"miner_getstat1\"}";
-                                NetworkStream serverStream = clientSocket.GetStream();
-                                byte[] outStream = System.Text.Encoding.ASCII.GetBytes(get_menu_request);
-                                serverStream.Write(outStream, 0, outStream.Length);
-                                serverStream.Flush();
-
-                                byte[] inStream = new byte[clientSocket.ReceiveBufferSize];
-                                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
-                                string _returndata = System.Text.Encoding.ASCII.GetString(inStream);
-
-                                EthMonJsonTemplate result = JsonConvert.DeserializeObject<EthMonJsonTemplate>(_returndata);
-
-                                hostRow.SubItems[5].Text = result.result[0]; // Version
-                                                                             // ETH Hashrates
-                                string[] eth_hashrates = result.result[3].Split(';');
-                                string eth_hashrate = "";
-
-                                for (int i = 0; i < eth_hashrates.Length; i++)
+                                if (clientSocket.ConnectAsync(host, 3333).Wait(1000))
                                 {
-                                    double hashrate = Double.Parse(eth_hashrates[i]) / 1000;
+                                    string get_menu_request = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"miner_getstat1\"}";
+                                    NetworkStream serverStream = clientSocket.GetStream();
+                                    byte[] outStream = System.Text.Encoding.ASCII.GetBytes(get_menu_request);
+                                    serverStream.Write(outStream, 0, outStream.Length);
+                                    serverStream.Flush();
 
-                                    eth_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Temps
-                                }
+                                    byte[] inStream = new byte[clientSocket.ReceiveBufferSize];
+                                    serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
+                                    string _returndata = System.Text.Encoding.ASCII.GetString(inStream);
 
-                                hostRow.SubItems[2].Text = eth_hashrate; // ETH HR
+                                    EthMonJsonTemplate result = JsonConvert.DeserializeObject<EthMonJsonTemplate>(_returndata);
 
-                                // DCR Hashrates
-                                string[] dcr_hashrates = result.result[5].Split(';');
-                                string dcr_hashrate = "";
-                                if (dcr_hashrates[0] == "off")
-                                {
-                                    hostRow.SubItems[3].Text = "Mode 1 activated";
-                                }
-                                else
-                                {
-                                    for (int i = 0; i < dcr_hashrates.Length; i++)
+                                    hostRow.SubItems[5].Text = result.result[0]; // Version
+                                                                                 // ETH Hashrates
+                                    string[] eth_hashrates = result.result[3].Split(';');
+                                    string eth_hashrate = "";
+
+                                    for (int i = 0; i < eth_hashrates.Length; i++)
                                     {
-                                        double hashrate = Double.Parse(dcr_hashrates[i]) / 1000;
+                                        double hashrate = Double.Parse(eth_hashrates[i]) / 1000;
 
-                                        dcr_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Temps
+                                        eth_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Temps
                                     }
 
-                                    hostRow.SubItems[3].Text = dcr_hashrate; // DCR HR
-                                }
+                                    hostRow.SubItems[2].Text = eth_hashrate; // ETH HR
 
-                                // Temps
-                                string[] temp = result.result[6].Split(';');
-                                string temps = "";
+                                    // DCR Hashrates
+                                    string[] dcr_hashrates = result.result[5].Split(';');
+                                    string dcr_hashrate = "";
+                                    if (dcr_hashrates[0] == "off")
+                                    {
+                                        hostRow.SubItems[3].Text = "Mode 1 activated";
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < dcr_hashrates.Length; i++)
+                                        {
+                                            double hashrate = Double.Parse(dcr_hashrates[i]) / 1000;
 
-                                for (int i = 0; i < temp.Length; i++)
+                                            dcr_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Temps
+                                        }
+
+                                        hostRow.SubItems[3].Text = dcr_hashrate; // DCR HR
+                                    }
+
+                                    // Temps
+                                    string[] temp = result.result[6].Split(';');
+                                    string temps = "";
+
+                                    for (int i = 0; i < temp.Length; i++)
+                                    {
+                                        temps += "GPU" + i + ": " + temp[i] + "C (FAN: " + temp[i + 1] + "%) "; // Temps
+                                        i++;
+                                    }
+
+                                    hostRow.SubItems[4].Text = temps;
+
+                                    // Close socket
+                                    clientSocket.Close();
+                                    clientSocket = null;
+
+                                    this.hostsList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                                    this.hostsList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                                    // Update web database for SMS Services
+                                    sendAPIUpdate(_returndata, host, name);
+                                } else
                                 {
-                                    temps += "GPU" + i + ": " + temp[i] + "C (FAN: " + temp[i + 1] + "%) "; // Temps
-                                    i++;
+                                    // Update web database for SMS Services
+                                    sendAPIUpdate("", host, name);
+
+                                    // Set values
+                                    hostRow.SubItems[2].Text = "OFFLINE";
+                                    hostRow.SubItems[3].Text = "OFFLINE";
+                                    hostRow.SubItems[4].Text = "OFFLINE";
+                                    hostRow.SubItems[5].Text = "OFFLINE";
                                 }
-
-                                hostRow.SubItems[4].Text = temps;
-
-                                // Close socket
-                                clientSocket.Close();
-                                clientSocket = null;
-
-                                this.hostsList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                                this.hostsList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
-                                // Update web database for SMS Services
-                                sendAPIUpdate(_returndata, host, name);
-                            } else
+                            }
+                            catch (Exception ex)
                             {
+                                Console.WriteLine(ex.Message);
+                                Console.WriteLine(ex.StackTrace);
+                                Console.WriteLine("Socket error...");
+
                                 // Update web database for SMS Services
                                 sendAPIUpdate("", host, name);
 

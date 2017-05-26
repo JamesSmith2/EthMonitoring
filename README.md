@@ -1,7 +1,7 @@
 # EthMonitoring
 Claymore's Dual Ethereum GPU Miner monitoring with SMS Support
 
-# Version 0.0.1
+# Current version
 
 - Support SMS Sending when:
 
