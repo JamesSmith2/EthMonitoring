@@ -4,8 +4,11 @@ Claymore's Dual Ethereum GPU Miner monitoring with SMS Support
 # Version 0.0.1
 
 - Support SMS Sending when:
+
 -- GPU temperature gets higher than required
+
 -- Miner is not responding for X amount of minutes
+
 
 - Supports multiple miners with one local software installed.
 
