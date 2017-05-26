@@ -21,6 +21,7 @@ namespace EthMonitoring
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
         private MySettings settings = MySettings.Load();
+        private LogWriter logger = new LogWriter();
 
         class EthMonJsonTemplate
         {
@@ -36,6 +37,8 @@ namespace EthMonitoring
     
             this.bw = new BackgroundWorker();
             this.bw.DoWork += new DoWorkEventHandler(monitoringHosts);
+
+            logger.LogWrite("Ethmonitoring v0.0.3 starting..");
 
             // Generate dictonary if needed
             if (settings.hosts == null)
@@ -59,6 +62,8 @@ namespace EthMonitoring
                     newHost.SubItems.Add(""); // VERSION
 
                     hostsList.Items.Add(newHost);
+
+                    logger.LogWrite("Adding host: " + entry.Value + " With name: " + entry.Key);
                 }
 
                 if(tokenField.Text.Length > 0)
@@ -87,6 +92,8 @@ namespace EthMonitoring
                     settings.hosts.Add(hostName.Text, hostField.Text);
                     settings.Save();
 
+                    logger.LogWrite("Adding new host: " + hostField.Text + " With name: " + hostName.Text);
+
                     // Clear values
                     hostField.Text = "";
                     hostName.Text = "";
@@ -94,6 +101,7 @@ namespace EthMonitoring
             } catch(Exception ex)
             {
                 Console.WriteLine("Exception on addHost: " + ex.Message);
+                logger.LogWrite("Exception on addHost: " + ex.Message);
             }
         }
 
@@ -123,6 +131,9 @@ namespace EthMonitoring
 
         private void monitoringHosts(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+
+
+            logger.LogWrite("Starting monitoring...");
 
             while (this.Monitoring)
             {
@@ -218,13 +229,16 @@ namespace EthMonitoring
                                     hostRow.SubItems[3].Text = "OFFLINE";
                                     hostRow.SubItems[4].Text = "OFFLINE";
                                     hostRow.SubItems[5].Text = "OFFLINE";
+
+                                    logger.LogWrite("Host not responsive: " + host);
                                 }
                             }
                             catch (Exception ex)
                             {
                                 Console.WriteLine(ex.Message);
                                 Console.WriteLine(ex.StackTrace);
-                                Console.WriteLine("Socket error...");
+
+                                logger.LogWrite("Host socket exception: " + ex.Message);
 
                                 // Update web database for SMS Services
                                 sendAPIUpdate("", host, name);
@@ -250,7 +264,7 @@ namespace EthMonitoring
                 {
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
-                    Console.WriteLine("Socket error...");
+                    logger.LogWrite("List exception: " + ex.Message);
                 }
 
                 // Collect free memory
@@ -259,6 +273,9 @@ namespace EthMonitoring
                 // Sleep for next reading
                 System.Threading.Thread.Sleep(2000);
             }
+
+
+            logger.LogWrite("Monitoring stopped...");
 
             Console.WriteLine("Monitoring stopped..");
         }
