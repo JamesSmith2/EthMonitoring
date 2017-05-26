@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -131,13 +132,9 @@ namespace EthMonitoring
                             var clientSocket = new System.Net.Sockets.TcpClient();
                             string host = hostRow.SubItems[0].Text;
                             string name = hostRow.SubItems[1].Text;
-                            Boolean status = false;
-
-                            //Console.WriteLine("Getting host: " + host); 
-                            //clientSocket.Connect(host, 3333);
+                            
                             if (clientSocket.ConnectAsync(host, 3333).Wait(1000))
                             {
-                                status = true;
                                 string get_menu_request = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"miner_getstat1\"}";
                                 NetworkStream serverStream = clientSocket.GetStream();
                                 byte[] outStream = System.Text.Encoding.ASCII.GetBytes(get_menu_request);
@@ -333,6 +330,12 @@ namespace EthMonitoring
             this.hostsList.Clear();
             settings.hosts.Clear();
             settings.Save();
+        }
+
+        private void tokenLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ProcessStartInfo sInfo = new ProcessStartInfo("http://monitoring.mylifegadgets.com");
+            Process.Start(sInfo);
         }
     }
 }

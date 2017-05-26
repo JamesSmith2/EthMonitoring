@@ -47,6 +47,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.removeItem = new System.Windows.Forms.Button();
             this.clearList = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // startMonitoring
@@ -113,12 +114,13 @@
             // tokenLink
             // 
             this.tokenLink.AutoSize = true;
-            this.tokenLink.Location = new System.Drawing.Point(554, 70);
+            this.tokenLink.Location = new System.Drawing.Point(554, 67);
             this.tokenLink.Name = "tokenLink";
             this.tokenLink.Size = new System.Drawing.Size(151, 13);
             this.tokenLink.TabIndex = 8;
             this.tokenLink.TabStop = true;
             this.tokenLink.Text = "Get your auth token from here!";
+            this.tokenLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.tokenLink_LinkClicked);
             // 
             // hostsList
             // 
@@ -201,11 +203,20 @@
             this.clearList.UseVisualStyleBackColor = true;
             this.clearList.Click += new System.EventHandler(this.clearList_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(484, 376);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(0, 13);
+            this.label5.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(717, 398);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.clearList);
             this.Controls.Add(this.removeItem);
             this.Controls.Add(this.label4);
@@ -250,6 +261,7 @@
         private System.Windows.Forms.ColumnHeader version;
         private System.Windows.Forms.Button removeItem;
         private System.Windows.Forms.Button clearList;
+        private System.Windows.Forms.Label label5;
     }
 }
 
