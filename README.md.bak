@@ -39,9 +39,6 @@ Access token can be received and monitored from here: http://monitoring.mylifega
 
 When downloading new files, extract them over or copy settings.json file to new folder where new binary is.
 
-# FAQ
-
-- Claymore's miner v9.4 needs to be enabled in firewall, v9.3 dosen't have this problem.
 
 # Supports
 
