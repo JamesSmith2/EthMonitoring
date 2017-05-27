@@ -41,7 +41,7 @@ When downloading new files, extract them over or copy settings.json file to new 
 
 # FAQ
 
-- Claymore's miner v9.4 needs to be enabled in firewall, v9.3 dosen't have this problem.
+- Claymore's miner v9.4 needs to be enabled in firewall, v9.3 doesn't have this problem.
 
 # Supports
 
