@@ -35,6 +35,10 @@ Access token can be received and monitored from here: http://monitoring.mylifega
 - SMS Services are used by https://textbelt.com API key can be collected from that site and inserted in settings section on the web.
 
 
+# How to update
+
+When downloading new files, extract them over or copy settings.json file to new folder where new binary is.
+
 
 # Supports
 
