@@ -38,7 +38,7 @@ namespace EthMonitoring
             this.bw = new BackgroundWorker();
             this.bw.DoWork += new DoWorkEventHandler(monitoringHosts);
 
-            logger.LogWrite("Ethmonitoring v0.0.3 starting..");
+            logger.LogWrite("Ethmonitoring v0.0.4 starting..");
 
             // Generate dictonary if needed
             if (settings.hosts == null)

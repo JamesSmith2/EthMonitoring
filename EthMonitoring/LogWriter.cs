@@ -25,13 +25,23 @@ namespace EthMonitoring
             m_exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             try
             {
-                using (StreamWriter w = File.AppendText(m_exePath + "\\" + "log.txt"))
+                // Check file size
+                string fileName = m_exePath + "\\" + "log.txt";
+                FileInfo txtfile = new FileInfo(fileName);
+                if (txtfile.Length > (2 * 1024 * 1024))       // ## NOTE: 2MB max file size
+                {
+                    var lines = File.ReadAllLines(fileName).Skip(10).ToArray();  // ## Set to 10 lines
+                    File.WriteAllLines(fileName, lines);
+                }
+
+                using (StreamWriter w = File.AppendText(fileName))
                 {
                     Log(logMessage, w);
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Logging exception: " + ex.Message);
             }
         }
 
@@ -44,6 +54,7 @@ namespace EthMonitoring
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Logging exception: " + ex.Message);
             }
         }
     }
