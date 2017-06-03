@@ -43,11 +43,14 @@
             this.dcr_hr = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.temp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.version = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hostName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.removeItem = new System.Windows.Forms.Button();
             this.clearList = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.minerType = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // startMonitoring
@@ -94,7 +97,7 @@
             // 
             // addhost
             // 
-            this.addhost.Location = new System.Drawing.Point(265, 65);
+            this.addhost.Location = new System.Drawing.Point(392, 66);
             this.addhost.Name = "addhost";
             this.addhost.Size = new System.Drawing.Size(75, 23);
             this.addhost.TabIndex = 6;
@@ -114,7 +117,7 @@
             // tokenLink
             // 
             this.tokenLink.AutoSize = true;
-            this.tokenLink.Location = new System.Drawing.Point(554, 67);
+            this.tokenLink.Location = new System.Drawing.Point(554, 70);
             this.tokenLink.Name = "tokenLink";
             this.tokenLink.Size = new System.Drawing.Size(151, 13);
             this.tokenLink.TabIndex = 8;
@@ -130,7 +133,8 @@
             this.eth_hashrate,
             this.dcr_hr,
             this.temp,
-            this.version});
+            this.version,
+            this.type});
             this.hostsList.Location = new System.Drawing.Point(12, 106);
             this.hostsList.Name = "hostsList";
             this.hostsList.Size = new System.Drawing.Size(693, 253);
@@ -145,27 +149,37 @@
             // 
             // name
             // 
+            this.name.DisplayIndex = 2;
             this.name.Text = "Miner name";
             this.name.Width = 113;
             // 
             // eth_hashrate
             // 
+            this.eth_hashrate.DisplayIndex = 3;
             this.eth_hashrate.Text = "ETH Hashrate";
             this.eth_hashrate.Width = 80;
             // 
             // dcr_hr
             // 
+            this.dcr_hr.DisplayIndex = 4;
             this.dcr_hr.Text = "DCR Hashrate";
             this.dcr_hr.Width = 88;
             // 
             // temp
             // 
+            this.temp.DisplayIndex = 5;
             this.temp.Text = "Temperatures";
             this.temp.Width = 142;
             // 
             // version
             // 
+            this.version.DisplayIndex = 6;
             this.version.Text = "Version";
+            // 
+            // type
+            // 
+            this.type.DisplayIndex = 1;
+            this.type.Text = "Type";
             // 
             // hostName
             // 
@@ -211,11 +225,33 @@
             this.label5.Size = new System.Drawing.Size(0, 13);
             this.label5.TabIndex = 15;
             // 
+            // minerType
+            // 
+            this.minerType.FormattingEnabled = true;
+            this.minerType.Items.AddRange(new object[] {
+            "Claymore",
+            "EWBF"});
+            this.minerType.Location = new System.Drawing.Point(265, 67);
+            this.minerType.Name = "minerType";
+            this.minerType.Size = new System.Drawing.Size(121, 21);
+            this.minerType.TabIndex = 16;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(262, 51);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(31, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Type";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(717, 398);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.minerType);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.clearList);
             this.Controls.Add(this.removeItem);
@@ -234,7 +270,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
-            this.Text = "Dual miner monitoring v0.0.4";
+            this.Text = "Dual miner monitoring v0.0.5";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -262,6 +298,9 @@
         private System.Windows.Forms.Button removeItem;
         private System.Windows.Forms.Button clearList;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox minerType;
+        private System.Windows.Forms.ColumnHeader type;
+        private System.Windows.Forms.Label label6;
     }
 }
 

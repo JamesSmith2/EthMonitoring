@@ -46,3 +46,9 @@ When downloading new files, extract them over or copy settings.json file to new 
 # Supports
 
 - Currently supports only Claymore's Dual Ethereum + Decred/Siacoin/Lbry/Pascal AMD+NVIDIA GPU Miner. https://bitcointalk.org/index.php?topic=1433925.0
+
+# Developer
+
+This software is free to use for everbody, but you can always support the developer: 
+
+BTC: 17x5FEZ4dT8QyXEE9ou73GT9ZKppfrNify
