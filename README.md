@@ -11,6 +11,8 @@ Claymore's Dual Ethereum GPU Miner monitoring with SMS Support
 
 
 - Supports multiple miners with one local software installed.
+- Supports EWBF API
+- Supports Claymore's Dual Ethereum GPU Miner 9.3-9.4
 
 # How to use
 
@@ -42,10 +44,12 @@ When downloading new files, extract them over or copy settings.json file to new 
 # FAQ
 
 - Claymore's miner v9.4 needs to be enabled in firewall, v9.3 doesn't have this problem.
+- EWBF needs to have --api 0.0.0.0:42000 command line parameter added to enable API access.
 
 # Supports
 
-- Currently supports only Claymore's Dual Ethereum + Decred/Siacoin/Lbry/Pascal AMD+NVIDIA GPU Miner. https://bitcointalk.org/index.php?topic=1433925.0
+- Claymore's Dual Ethereum + Decred/Siacoin/Lbry/Pascal AMD+NVIDIA GPU Miner. https://bitcointalk.org/index.php?topic=1433925.0
+- EWBF's CUDA Zcash miner https://bitcointalk.org/index.php?topic=1707546.0
 
 # Developer
 
