@@ -26,12 +26,12 @@ namespace EthMonitoring
         public Form1()
         {
             InitializeComponent();
-            Control.CheckForIllegalCrossThreadCalls = false;
+            //Control.CheckForIllegalCrossThreadCalls = false;
 
             this.bw = new BackgroundWorker();
             this.bw.DoWork += new DoWorkEventHandler(monitoringHosts);
 
-            logger.LogWrite("Ethmonitoring v0.0.5 starting..");
+            logger.LogWrite("Ethmonitoring v0.0.6 starting..");
 
             // Generate dictonary if needed
             if (settings.hosts == null)
@@ -168,9 +168,9 @@ namespace EthMonitoring
 
                     var response = client.UploadValues("http://monitoring.mylifegadgets.com/api/update", "POST", values);
 
-                    var responseString = Encoding.Default.GetString(response);
+                    //var responseString = Encoding.Default.GetString(response);
 
-                    Console.WriteLine(responseString);
+                    //Console.WriteLine(responseString);
                 }
             } catch (Exception ex)
             {
@@ -189,10 +189,12 @@ namespace EthMonitoring
                 try
                 {
                     // Get list from listview
-                    if (hostsList.Items.Count > 0)
+                    if (GlobalFunctions.listViewCountItems(this.hostsList) > 0)
                     {
-                        foreach (ListViewItem hostRow in this.hostsList.Items)
+                        for(int row = 0;row< GlobalFunctions.listViewCountItems(this.hostsList);row++)
                         {
+
+                            ListViewItem hostRow = GlobalFunctions.getListViewItem(this.hostsList, row);
 
                             string host = hostRow.SubItems[0].Text;
                             string name = hostRow.SubItems[1].Text;
@@ -222,13 +224,13 @@ namespace EthMonitoring
 
                                 if (stats.online)
                                 {
-                                    hostRow.SubItems[5].Text = stats.version; // Version
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 5, stats.version); // Version
 
                                     // ETH Hashrates
                                     string eth_hashrate = "";
                                     if (stats.hashrates[0] == "off")
                                     {
-                                        hostRow.SubItems[3].Text = "Mode 2 activated";
+                                        GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "Mode 2 activated");
                                     }
                                     else
                                     {
@@ -244,8 +246,8 @@ namespace EthMonitoring
                                             }
                                         }
                                     }
-
-                                    hostRow.SubItems[2].Text = eth_hashrate; // ETH HR
+                                    
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 2, eth_hashrate); // ETH HR
 
                                     if (type == "Claymore")
                                     {
@@ -253,7 +255,7 @@ namespace EthMonitoring
                                         string dcr_hashrate = "";
                                         if (stats.dcr_hashrates[0] == "off")
                                         {
-                                            hostRow.SubItems[3].Text = "Mode 1 activated";
+                                            GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "Mode 1 activated");
                                         }
                                         else
                                         {
@@ -263,12 +265,12 @@ namespace EthMonitoring
                                                     dcr_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Hashrate
                                                 
                                             }
-
-                                            hostRow.SubItems[3].Text = dcr_hashrate; // DCR HR
+                                            
+                                            GlobalFunctions.listViewEditItem(this.hostsList, row, 3, dcr_hashrate); // DCR HR
                                         }
                                     } else
                                     {
-                                        hostRow.SubItems[3].Text = "-";
+                                        GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "-");
                                     }
 
                                     // Temps
@@ -285,11 +287,10 @@ namespace EthMonitoring
                                         }
                                         i++;
                                     }
+                                    
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 4, temps);
 
-                                    hostRow.SubItems[4].Text = temps;
-
-                                    this.hostsList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                                    this.hostsList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                                    GlobalFunctions.updateColumnSizesForListView(this.hostsList);
 
                                     // Update web database for SMS Services
                                     sendAPIUpdate(stats, host, name);
@@ -300,10 +301,10 @@ namespace EthMonitoring
                                     sendAPIUpdate(stats, host, name);
 
                                     // Set values
-                                    hostRow.SubItems[2].Text = "OFFLINE";
-                                    hostRow.SubItems[3].Text = "OFFLINE";
-                                    hostRow.SubItems[4].Text = "OFFLINE";
-                                    hostRow.SubItems[5].Text = "OFFLINE";
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "OFFLINE");
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "OFFLINE");
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
                                     
                                     logger.LogWrite("Host not responsive: " + host);
                                 }
@@ -319,14 +320,14 @@ namespace EthMonitoring
                                 sendAPIUpdate("", host, name);
 
                                 // Set values
-                                hostRow.SubItems[2].Text = "OFFLINE";
-                                hostRow.SubItems[3].Text = "OFFLINE";
-                                hostRow.SubItems[4].Text = "OFFLINE";
-                                hostRow.SubItems[5].Text = "OFFLINE";
+                                GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "OFFLINE");
+                                GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "OFFLINE");
+                                GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
+                                GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
                             }
 
                             // Print
-                            Console.WriteLine("Host: " + host + " updated");
+                            //Console.WriteLine("Host: " + host + " updated");
                         }
 
 

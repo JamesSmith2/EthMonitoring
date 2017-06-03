@@ -77,6 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalFunctions.cs" />
     <Compile Include="Miners\CCMiner.cs" />
     <Compile Include="Miners\DualMinerTemplate.cs" />
     <Compile Include="Form1.cs">
