@@ -230,7 +230,8 @@
             this.minerType.FormattingEnabled = true;
             this.minerType.Items.AddRange(new object[] {
             "Claymore",
-            "EWBF"});
+            "EWBF",
+            "CCMiner"});
             this.minerType.Location = new System.Drawing.Point(265, 67);
             this.minerType.Name = "minerType";
             this.minerType.Size = new System.Drawing.Size(121, 21);
@@ -270,7 +271,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
-            this.Text = "Dual miner monitoring v0.0.6";
+            this.Text = "Dual miner monitoring v0.0.7";
             this.ResumeLayout(false);
             this.PerformLayout();
 

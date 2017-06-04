@@ -31,7 +31,7 @@ namespace EthMonitoring
             this.bw = new BackgroundWorker();
             this.bw.DoWork += new DoWorkEventHandler(monitoringHosts);
 
-            logger.LogWrite("Ethmonitoring v0.0.6 starting..");
+            logger.LogWrite("Ethmonitoring v0.0.7 starting..");
 
             // Generate dictonary if needed
             if (settings.hosts == null)
@@ -203,8 +203,7 @@ namespace EthMonitoring
                             try {
 
                                 Stats stats;
-
-                                Console.WriteLine("Type: " + type);
+                                
                                 if (type == "Claymore")
                                 {
                                     // Retrieve EWBF stats
@@ -228,7 +227,7 @@ namespace EthMonitoring
 
                                     // ETH Hashrates
                                     string eth_hashrate = "";
-                                    if (stats.hashrates[0] == "off")
+                                    if (stats.hashrates.Count > 0 && stats.hashrates[0] == "off")
                                     {
                                         GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "Mode 2 activated");
                                     }
@@ -236,13 +235,16 @@ namespace EthMonitoring
                                     {
                                         for (int i = 0; i < stats.hashrates.Count; i++)
                                         {
-                                            if (type == "Claymore")
+                                            if (type == "Claymore" || type == "CCMiner")
                                             {
-                                                double hashrate = Double.Parse(stats.hashrates[i]) / 1000;
+                                                double hashrate = double.Parse(stats.hashrates[i]) / 1000;
                                                 eth_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Hashrate
-                                            } else
+                                            } else if(type == "EWBF")
                                             {
                                                 eth_hashrate += "GPU" + i + ": " + stats.hashrates[i] + " Sol/s "; // Hashrate
+                                            } else
+                                            {
+                                                eth_hashrate += "GPU" + i + ": " + stats.hashrates[i] + "Mh/s "; // Hashrate
                                             }
                                         }
                                     }
@@ -281,7 +283,11 @@ namespace EthMonitoring
                                         if (type == "Claymore")
                                         {
                                             temps += "GPU" + i + ": " + stats.temps[i] + "C (FAN: " + stats.fan_speeds[i] + "%) "; // Temps
-                                        } else
+                                        }
+                                        else if(type == "CCMiner")
+                                        {
+                                            temps += "GPU" + i + ": " + stats.temps[i] + "C (" + stats.power_usage[i] + "W / " + stats.fan_speeds[i] + "%)"; // Temps
+                                        }else
                                         {
                                             temps += "GPU" + i + ": " + stats.temps[i] + "C (" + stats.power_usage[i] + "W) "; // Temps
                                         }
