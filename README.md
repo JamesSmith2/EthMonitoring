@@ -9,11 +9,22 @@ Claymore's Dual Ethereum GPU Miner monitoring with SMS Support
 
 	-- Miner is not responding for X amount of minutes
 
+	-- Hashrate below X
+
 
 - Supports multiple miners with one local software installed.
 - Supports EWBF API
 - Supports Claymore's Dual Ethereum GPU Miner 9.3-9.4
 - Supports CCMiner-Alexis 1.0
+
+# Web service
+
+- Supports profit monitoring
+- Mobile friendly
+- Profit graph
+- Gpu graph (coming soon)
+- Telegram support
+- SMS Support
 
 # How to use
 
@@ -27,7 +38,7 @@ Access token can be received and monitored from here: http://monitoring.mylifega
 
 - Install windows application only for one local miner.
 
-- Add local hosts example: 192.168.1.1 and name: MyMiner1
+- Add local hosts example: 192.168.1.1 and name: MyMiner1 (For custom port use: 192.168.1.1:3333)
 
 - Register on site to get the token
 
@@ -52,9 +63,12 @@ When downloading new files, extract them over or copy settings.json file to new 
 
 - Claymore's Dual Ethereum + Decred/Siacoin/Lbry/Pascal AMD+NVIDIA GPU Miner. https://bitcointalk.org/index.php?topic=1433925.0
 - EWBF's CUDA Zcash miner https://bitcointalk.org/index.php?topic=1707546.0
+- CCMiner-Alexis 1.0
 
 # Developer
 
 This software is free to use for everbody, but you can always support the developer: 
 
 BTC: 17x5FEZ4dT8QyXEE9ou73GT9ZKppfrNify
+ETH: 0xbfb5e20e58cb7fa67fbbf3f193ba349d71b276ef
+ZEC: t1VUN4kfNiZQmwZ7dL3X6XujrCU3A6VMfbh

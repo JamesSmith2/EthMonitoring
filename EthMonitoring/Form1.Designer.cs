@@ -271,7 +271,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
-            this.Text = "Dual miner monitoring v0.0.7";
+            this.Text = "Dual miner monitoring v0.0.8";
             this.ResumeLayout(false);
             this.PerformLayout();
 
