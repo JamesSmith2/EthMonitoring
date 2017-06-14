@@ -51,6 +51,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.minerType = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.themeButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // startMonitoring
@@ -74,6 +75,7 @@
             // 
             // tokenField
             // 
+            this.tokenField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tokenField.Location = new System.Drawing.Point(12, 28);
             this.tokenField.Name = "tokenField";
             this.tokenField.Size = new System.Drawing.Size(549, 20);
@@ -90,6 +92,7 @@
             // 
             // hostField
             // 
+            this.hostField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hostField.Location = new System.Drawing.Point(12, 67);
             this.hostField.Name = "hostField";
             this.hostField.Size = new System.Drawing.Size(112, 20);
@@ -183,6 +186,7 @@
             // 
             // hostName
             // 
+            this.hostName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hostName.Location = new System.Drawing.Point(130, 67);
             this.hostName.Name = "hostName";
             this.hostName.Size = new System.Drawing.Size(129, 20);
@@ -246,11 +250,23 @@
             this.label6.TabIndex = 17;
             this.label6.Text = "Type";
             // 
+            // themeButton
+            // 
+            this.themeButton.Location = new System.Drawing.Point(630, 366);
+            this.themeButton.Name = "themeButton";
+            this.themeButton.Size = new System.Drawing.Size(75, 23);
+            this.themeButton.TabIndex = 18;
+            this.themeButton.Text = "Dark theme";
+            this.themeButton.UseVisualStyleBackColor = true;
+            this.themeButton.Click += new System.EventHandler(this.themeButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(717, 398);
+            this.Controls.Add(this.themeButton);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.minerType);
             this.Controls.Add(this.label5);
@@ -302,6 +318,7 @@
         private System.Windows.Forms.ComboBox minerType;
         private System.Windows.Forms.ColumnHeader type;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button themeButton;
     }
 }
 

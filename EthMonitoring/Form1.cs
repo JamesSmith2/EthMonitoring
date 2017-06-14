@@ -18,6 +18,8 @@ namespace EthMonitoring
 {
     public partial class Form1 : Form
     {
+        private string Version = "0.0.9";
+
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
         private MySettings settings = MySettings.Load();
@@ -29,10 +31,15 @@ namespace EthMonitoring
             InitializeComponent();
             //Control.CheckForIllegalCrossThreadCalls = false;
 
+            // Load theme
+            loadTheme();
+
             this.bw = new BackgroundWorker();
             this.bw.DoWork += new DoWorkEventHandler(monitoringHosts);
 
-            logger.LogWrite("Ethmonitoring v0.0.8 starting..");
+            logger.LogWrite("Ethmonitoring " + this.Version + " starting..");
+
+            this.Text = "EthMonitoring version " + this.Version;
 
             // Generate dictonary if needed
             if (settings.hosts == null)
@@ -75,6 +82,50 @@ namespace EthMonitoring
                 {
                     startMonitoringMiners();
                 }
+            }
+        }
+
+        private void loadTheme()
+        {
+            if(settings.theme == "dark")
+            {
+                this.BackColor = Color.FromArgb(46,46,46);
+                // Labels
+                this.label1.ForeColor = Color.FromArgb(255, 255, 255);
+                this.label2.ForeColor = Color.FromArgb(255, 255, 255);
+                this.label3.ForeColor = Color.FromArgb(255, 255, 255);
+                this.label4.ForeColor = Color.FromArgb(255, 255, 255);
+                this.label5.ForeColor = Color.FromArgb(255, 255, 255);
+                this.label6.ForeColor = Color.FromArgb(255, 255, 255);
+
+                // Boxes
+                this.tokenField.BackColor = Color.FromArgb(106, 106, 106);
+                this.tokenField.ForeColor = Color.FromArgb(255, 255, 255);
+
+                this.hostField.BackColor = Color.FromArgb(106, 106, 106);
+                this.hostField.ForeColor = Color.FromArgb(255, 255, 255);
+
+                this.hostName.BackColor = Color.FromArgb(106, 106, 106);
+                this.hostName.ForeColor = Color.FromArgb(255, 255, 255);
+
+                this.minerType.BackColor = Color.FromArgb(106, 106, 106);
+                this.minerType.ForeColor = Color.FromArgb(255, 255, 255);
+
+                this.tokenLink.LinkColor = Color.FromArgb(255, 165, 0);
+
+                this.hostsList.BackColor = Color.FromArgb(106, 106, 106);
+                this.hostsList.ForeColor = Color.FromArgb(255, 255, 255);
+            } else
+            {
+                this.BackColor = Color.FromArgb(230, 230, 230);
+                // Labels
+                this.label1.ForeColor = Color.FromArgb(0,0,0);
+                this.label2.ForeColor = Color.FromArgb(0, 0, 0);
+                this.label3.ForeColor = Color.FromArgb(0, 0, 0);
+                this.label4.ForeColor = Color.FromArgb(0, 0, 0);
+                this.label5.ForeColor = Color.FromArgb(0, 0, 0);
+                this.label6.ForeColor = Color.FromArgb(0, 0, 0);
+                this.tokenLink.LinkColor = Color.FromArgb(0, 0, 0);
             }
         }
 
@@ -229,7 +280,7 @@ namespace EthMonitoring
                         }
                         // Retrieve EWBF stats
                         EWBF miner = new EWBF();
-                        stats = miner.getStats(host, 42000);
+                        stats = miner.getStats(host, port);
                     }
                     else
                     {
@@ -238,7 +289,7 @@ namespace EthMonitoring
                             port = 4068;
                         }
                         CCMiner miner = new CCMiner();
-                        stats = miner.getStats(host, 4068);
+                        stats = miner.getStats(host, port);
                     }
 
                     if (stats.online)
@@ -358,7 +409,7 @@ namespace EthMonitoring
                 }
 
                 // Sleep for next reading
-                System.Threading.Thread.Sleep(5000);
+                System.Threading.Thread.Sleep(15000);
             }
 
             // Remove from active worker list
@@ -448,6 +499,7 @@ namespace EthMonitoring
         {
             public List<MinersTemplate> hosts = null;
             public string accessToken = "";
+            public string theme = "light";
         }
 
         public class AppSettings<T> where T : new()
@@ -522,6 +574,24 @@ namespace EthMonitoring
         {
             ProcessStartInfo sInfo = new ProcessStartInfo("http://monitoring.mylifegadgets.com");
             Process.Start(sInfo);
+        }
+
+        private void themeButton_Click(object sender, EventArgs e)
+        {
+            if(settings.theme == "light")
+            {
+                settings.theme = "dark";
+                themeButton.Text = "Light theme";
+            } else
+            {
+                settings.theme = "light";
+                themeButton.Text = "Dark theme";
+            }
+
+            // Load theme
+            loadTheme();
+
+            settings.Save();
         }
     }
 }

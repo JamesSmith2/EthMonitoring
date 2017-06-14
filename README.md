@@ -69,8 +69,8 @@ When downloading new files, extract them over or copy settings.json file to new 
 
 This software is free to use for everbody, but you can always support the developer: 
 
-BTC: 17x5FEZ4dT8QyXEE9ou73GT9ZKppfrNify
+BTC: 1JUrgoekaQm7H4ARrvduGGCmWkrzUoxKBk
 
-ETH: 0xbfb5e20e58cb7fa67fbbf3f193ba349d71b276ef
+ETH: 0xD9B9200eE4017A0E07089629475DbaBA611Fc4e6
 
 ZEC: t1VUN4kfNiZQmwZ7dL3X6XujrCU3A6VMfbh
