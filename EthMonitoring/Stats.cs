@@ -20,6 +20,9 @@ namespace EthMonitoring
         public List<string> power_usage;
         public Boolean online;
 
+        // Error
+        public Exception ex;
+
         // Pool stats
         public int accepted;
         public int rejected;

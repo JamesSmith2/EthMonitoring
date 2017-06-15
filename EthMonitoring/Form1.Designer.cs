@@ -56,7 +56,7 @@
             // 
             // startMonitoring
             // 
-            this.startMonitoring.Location = new System.Drawing.Point(567, 12);
+            this.startMonitoring.Location = new System.Drawing.Point(745, 18);
             this.startMonitoring.Name = "startMonitoring";
             this.startMonitoring.Size = new System.Drawing.Size(138, 36);
             this.startMonitoring.TabIndex = 0;
@@ -78,7 +78,7 @@
             this.tokenField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tokenField.Location = new System.Drawing.Point(12, 28);
             this.tokenField.Name = "tokenField";
-            this.tokenField.Size = new System.Drawing.Size(549, 20);
+            this.tokenField.Size = new System.Drawing.Size(727, 20);
             this.tokenField.TabIndex = 3;
             // 
             // label2
@@ -120,7 +120,7 @@
             // tokenLink
             // 
             this.tokenLink.AutoSize = true;
-            this.tokenLink.Location = new System.Drawing.Point(554, 70);
+            this.tokenLink.Location = new System.Drawing.Point(732, 70);
             this.tokenLink.Name = "tokenLink";
             this.tokenLink.Size = new System.Drawing.Size(151, 13);
             this.tokenLink.TabIndex = 8;
@@ -140,7 +140,7 @@
             this.type});
             this.hostsList.Location = new System.Drawing.Point(12, 106);
             this.hostsList.Name = "hostsList";
-            this.hostsList.Size = new System.Drawing.Size(693, 253);
+            this.hostsList.Size = new System.Drawing.Size(871, 253);
             this.hostsList.TabIndex = 9;
             this.hostsList.UseCompatibleStateImageBehavior = false;
             this.hostsList.View = System.Windows.Forms.View.Details;
@@ -252,7 +252,7 @@
             // 
             // themeButton
             // 
-            this.themeButton.Location = new System.Drawing.Point(630, 366);
+            this.themeButton.Location = new System.Drawing.Point(808, 366);
             this.themeButton.Name = "themeButton";
             this.themeButton.Size = new System.Drawing.Size(75, 23);
             this.themeButton.TabIndex = 18;
@@ -265,7 +265,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(717, 398);
+            this.ClientSize = new System.Drawing.Size(895, 398);
             this.Controls.Add(this.themeButton);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.minerType);

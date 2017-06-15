@@ -45,7 +45,7 @@ namespace EthMonitoring
             {
                 var clientSocket = new System.Net.Sockets.TcpClient();
 
-                if (clientSocket.ConnectAsync(_host, _port).Wait(1000))
+                if (clientSocket.ConnectAsync(_host, _port).Wait(5000))
                 {
                     string get_menu_request = "{\"id\":1, \"method\":\"getstat\"}\n";
                     NetworkStream serverStream = clientSocket.GetStream();

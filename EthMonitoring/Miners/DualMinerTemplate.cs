@@ -17,6 +17,7 @@ namespace EthMonitoring
     }
     class DualMinerTemplate
     {
+        LogWriter logger = new LogWriter();
 
         public Stats getStats(string _host, int _port)
         {
@@ -35,7 +36,7 @@ namespace EthMonitoring
             {
                 var clientSocket = new System.Net.Sockets.TcpClient();
 
-                if (clientSocket.ConnectAsync(_host, 3333).Wait(1000))
+                if (clientSocket.ConnectAsync(_host, _port).Wait(5000))
                 {
                     string get_menu_request = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"miner_getstat1\"}";
                     NetworkStream serverStream = clientSocket.GetStream();
@@ -94,8 +95,10 @@ namespace EthMonitoring
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
+                logger.LogWrite("Host socket exception: " + ex.Message);
+                logger.LogWrite("Stacktrace: " + ex.StackTrace);
 
-                //logger.LogWrite("Host socket exception: " + ex.Message);
+                stats.ex = ex;
             }
 
             return stats;

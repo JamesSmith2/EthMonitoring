@@ -18,7 +18,7 @@ namespace EthMonitoring
 {
     public partial class Form1 : Form
     {
-        private string Version = "0.0.9";
+        private string Version = "0.0.11";
 
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
@@ -195,7 +195,7 @@ namespace EthMonitoring
                 values["host"] = _host;
                 values["name"] = _name;
 
-                var response = client.UploadValues("http://monitoring.mylifegadgets.com/api/update", "POST", values);
+                var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/update", "POST", values);
 
                 //var responseString = Encoding.Default.GetString(response);
 
@@ -216,9 +216,9 @@ namespace EthMonitoring
                     values["data"] = JsonConvert.SerializeObject(_stats);
                     values["host"] = _host;
                     values["name"] = _name;
-                    values["version"] = "1.2";
+                    values["version"] = "1.5";
 
-                    var response = client.UploadValues("http://monitoring.mylifegadgets.com/api/update", "POST", values);
+                    var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/update", "POST", values);
 
                     //var responseString = Encoding.Default.GetString(response);
 
@@ -256,7 +256,7 @@ namespace EthMonitoring
 
             while (this.Monitoring && hostRow != null)
             {
-                
+                bool error = false;
                 try
                 {
 
@@ -388,7 +388,9 @@ namespace EthMonitoring
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
 
-                        logger.LogWrite("Host not responsive: " + host);
+                        logger.LogWrite("Host not responsive: " + host + " Message: " + stats.ex.Message);
+                        logger.LogWrite("Stacktrace: " + stats.ex.StackTrace);
+                        error = true;
                     }
                 }
                 catch (Exception ex)
@@ -397,6 +399,7 @@ namespace EthMonitoring
                     Console.WriteLine(ex.StackTrace);
 
                     logger.LogWrite("Host socket exception: " + ex.Message);
+                    logger.LogWrite("Stacktrace: " + ex.StackTrace);
 
                     // Update web database for SMS Services
                     sendAPIUpdate("", host, name);
@@ -406,10 +409,16 @@ namespace EthMonitoring
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "OFFLINE");
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
+                    error = true;
                 }
 
-                // Sleep for next reading
-                System.Threading.Thread.Sleep(15000);
+                if (!error)
+                {
+                    System.Threading.Thread.Sleep(25000);
+                } else
+                {
+                    System.Threading.Thread.Sleep(5000);
+                }
             }
 
             // Remove from active worker list

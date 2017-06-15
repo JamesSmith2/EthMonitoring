@@ -17,7 +17,7 @@ namespace EthMonitoring
             string minerData = "";
             var clientSocket = new System.Net.Sockets.TcpClient();
 
-            if (clientSocket.ConnectAsync(this.host, this.port).Wait(1000))
+            if (clientSocket.ConnectAsync(this.host, this.port).Wait(5000))
             {
                 //string get_menu_request = "threads|";
                 NetworkStream serverStream = clientSocket.GetStream();
