@@ -19,9 +19,7 @@ namespace EthMonitoring
         public List<string> fan_speeds;
         public List<string> power_usage;
         public Boolean online;
-
-        // Error
-        public Exception ex;
+        public string uptime;
 
         // Pool stats
         public int accepted;

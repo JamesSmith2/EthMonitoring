@@ -18,7 +18,7 @@ namespace EthMonitoring
 {
     public partial class Form1 : Form
     {
-        private string Version = "0.0.11";
+        private string Version = "0.0.12";
 
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
@@ -216,7 +216,7 @@ namespace EthMonitoring
                     values["data"] = JsonConvert.SerializeObject(_stats);
                     values["host"] = _host;
                     values["name"] = _name;
-                    values["version"] = "1.5";
+                    values["version"] = "1.6";
 
                     var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/update", "POST", values);
 
@@ -324,7 +324,7 @@ namespace EthMonitoring
 
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 2, eth_hashrate); // ETH HR
 
-                        if (type == "Claymore")
+                        if (type == "Claymore" && stats.dcr_hashrates.Count > 0)
                         {
                             // DCR Hashrates
                             string dcr_hashrate = "";
@@ -356,11 +356,20 @@ namespace EthMonitoring
                         {
                             if (type == "Claymore")
                             {
-                                temps += "GPU" + i + ": " + stats.temps[i] + "C (FAN: " + stats.fan_speeds[i] + "%) "; // Temps
+                                if (stats.fan_speeds.Count > 0)
+                                {
+                                    temps += "GPU" + i + ": " + stats.temps[i] + "C (FAN: " + stats.fan_speeds[i] + "%) "; // Temps
+                                } else
+                                {
+                                    temps += "GPU" + i + ": " + stats.temps[i] + "C"; // Temps
+                                }
                             }
                             else if (type == "CCMiner")
                             {
-                                temps += "GPU" + i + ": " + stats.temps[i] + "C (" + stats.power_usage[i] + "W / " + stats.fan_speeds[i] + "%)"; // Temps
+                                if (stats.power_usage.Count > 0 && stats.fan_speeds.Count > 0 && stats.temps.Count > 0)
+                                {
+                                    temps += "GPU" + i + ": " + stats.temps[i] + "C (" + stats.power_usage[i] + "W / " + stats.fan_speeds[i] + "%)"; // Temps
+                                } 
                             }
                             else
                             {
@@ -387,9 +396,6 @@ namespace EthMonitoring
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
-
-                        logger.LogWrite("Host not responsive: " + host + " Message: " + stats.ex.Message);
-                        logger.LogWrite("Stacktrace: " + stats.ex.StackTrace);
                         error = true;
                     }
                 }
@@ -398,8 +404,7 @@ namespace EthMonitoring
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
 
-                    logger.LogWrite("Host socket exception: " + ex.Message);
-                    logger.LogWrite("Stacktrace: " + ex.StackTrace);
+                    logger.LogWrite("Host socket exception: " + ex.ToString());
 
                     // Update web database for SMS Services
                     sendAPIUpdate("", host, name);

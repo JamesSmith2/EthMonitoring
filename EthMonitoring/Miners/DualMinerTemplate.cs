@@ -51,6 +51,7 @@ namespace EthMonitoring
                     EthMonJsonTemplate result = JsonConvert.DeserializeObject<EthMonJsonTemplate>(_returndata);
 
                     stats.version = result.result[0]; // Version
+                    stats.uptime = result.result[1]; // Uptime
 
                     string[] miner_stats = result.result[2].Split(';');
                     stats.total_hashrate = miner_stats[0];
@@ -95,10 +96,7 @@ namespace EthMonitoring
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
-                logger.LogWrite("Host socket exception: " + ex.Message);
-                logger.LogWrite("Stacktrace: " + ex.StackTrace);
-
-                stats.ex = ex;
+                logger.LogWrite("Host socket exception: " + ex.ToString());
             }
 
             return stats;
