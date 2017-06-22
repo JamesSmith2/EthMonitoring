@@ -24,6 +24,9 @@ namespace EthMonitoring
             Stats stats = new Stats()
             {
                 online = false,
+                ex = null,
+                uptime = "",
+                version = "",
                 hashrates = new List<string>(),
                 dcr_hashrates = new List<string>(),
                 temps = new List<string>(),
@@ -47,6 +50,9 @@ namespace EthMonitoring
                     byte[] inStream = new byte[clientSocket.ReceiveBufferSize];
                     serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
                     string _returndata = System.Text.Encoding.ASCII.GetString(inStream);
+
+                    if (_returndata.Length == 0)
+                        throw new Exception("Invalid data");
 
                     EthMonJsonTemplate result = JsonConvert.DeserializeObject<EthMonJsonTemplate>(_returndata);
 
@@ -75,14 +81,19 @@ namespace EthMonitoring
 
                     // Temps and fan speeds
                     string[] temp = result.result[6].Split(';');
-
-                    int temp_row = 0;
-                    for (int i = 0; i < temp.Length; i++)
+                    try
                     {
-                        stats.temps.Add(temp[i]);
-                        stats.fan_speeds.Add(temp[i + 1]);
-                        i++;
-                        temp_row++;
+                        int temp_row = 0;
+                        for (int i = 0; i < temp.Length; i++)
+                        {
+                            stats.temps.Add(temp[i]);
+                            stats.fan_speeds.Add(temp[i + 1]);
+                            i++;
+                            temp_row++;
+                        }
+                    } catch(Exception ex)
+                    {
+
                     }
                     
                     // Close socket
@@ -96,6 +107,7 @@ namespace EthMonitoring
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
+                stats.ex = ex;
                 logger.LogWrite("Host socket exception: " + ex.ToString());
             }
 

@@ -33,7 +33,9 @@ namespace EthMonitoring
             Stats stats = new Stats()
             {
                 online = false,
+                ex = null,
                 uptime = "",
+                version = "",
                 hashrates = new List<string>(),
                 dcr_hashrates = new List<string>(),
                 temps = new List<string>(),

@@ -18,7 +18,7 @@ namespace EthMonitoring
 {
     public partial class Form1 : Form
     {
-        private string Version = "0.0.12";
+        private string Version = "0.0.14";
 
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
@@ -72,6 +72,7 @@ namespace EthMonitoring
                     {
                         newHost.SubItems.Add("CCMiner"); // TYPE
                     }
+                    newHost.SubItems.Add("-"); // Last updated
 
                     hostsList.Items.Add(newHost);
 
@@ -143,6 +144,7 @@ namespace EthMonitoring
                     newHost.SubItems.Add("Initializing.."); // TEMPERATURES
                     newHost.SubItems.Add(""); // VERSION
                     newHost.SubItems.Add(minerType.Text); // Type
+                    newHost.SubItems.Add("-"); // Last updated
 
                     hostsList.Items.Add(newHost);
 
@@ -167,6 +169,7 @@ namespace EthMonitoring
                     settings.Save();
 
                     logger.LogWrite("Adding new host: " + hostField.Text + " With name: " + hostName.Text);
+                    sendDebugUpdate("Adding new host: " + hostField.Text + " With name: " + hostName.Text);
 
                     // Clear values
                     hostField.Text = "";
@@ -176,6 +179,7 @@ namespace EthMonitoring
             {
                 Console.WriteLine("Exception on addHost: " + ex.Message);
                 logger.LogWrite("Exception on addHost: " + ex.Message);
+                sendDebugUpdate("Exception on addHost: " + ex.ToString());
             }
         }
 
@@ -216,7 +220,7 @@ namespace EthMonitoring
                     values["data"] = JsonConvert.SerializeObject(_stats);
                     values["host"] = _host;
                     values["name"] = _name;
-                    values["version"] = "1.6";
+                    values["version"] = "1.8";
 
                     var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/update", "POST", values);
 
@@ -225,6 +229,28 @@ namespace EthMonitoring
                     //Console.WriteLine(responseString);
                 }
             } catch (Exception ex)
+            {
+                Console.WriteLine("Api send exception: " + ex.Message);
+            }
+        }
+
+        private void sendDebugUpdate(string _debug)
+        {
+            try
+            {
+                string serviceToken = tokenField.Text;
+
+                using (var client = new WebClient())
+                {
+                    var values = new NameValueCollection();
+                    values["token"] = tokenField.Text;
+                    values["debug"] = _debug;
+                    values["version"] = "1.8";
+
+                    var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/debug", "POST", values);
+                }
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Api send exception: " + ex.Message);
             }
@@ -292,7 +318,7 @@ namespace EthMonitoring
                         stats = miner.getStats(host, port);
                     }
 
-                    if (stats.online)
+                    if (stats.online && stats.version.Length > 0)
                     {
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 5, stats.version); // Version
 
@@ -379,6 +405,7 @@ namespace EthMonitoring
                         }
 
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 4, temps);
+                        GlobalFunctions.listViewEditItem(this.hostsList, row, 7, DateTime.Now.ToString("HH:mm:ss"));
 
                         GlobalFunctions.updateColumnSizesForListView(this.hostsList);
 
@@ -390,12 +417,17 @@ namespace EthMonitoring
                     {
                         // Update web database for SMS Services
                         sendAPIUpdate(stats, host, name);
+                        if (stats.ex != null)
+                        {
+                            sendDebugUpdate("Host socket exception (Offline | type: " + type + "): " + stats.ex.ToString());
+                        }
 
                         // Set values
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
+                        GlobalFunctions.listViewEditItem(this.hostsList, row, 7, DateTime.Now.ToString("HH:mm:ss"));
                         error = true;
                     }
                 }
@@ -405,6 +437,7 @@ namespace EthMonitoring
                     Console.WriteLine(ex.StackTrace);
 
                     logger.LogWrite("Host socket exception: " + ex.ToString());
+                    sendDebugUpdate("Host socket exception Host: " + host + ":"+port+" Type: " + type + ": " + ex.ToString());
 
                     // Update web database for SMS Services
                     sendAPIUpdate("", host, name);
@@ -414,17 +447,26 @@ namespace EthMonitoring
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "OFFLINE");
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
+                    GlobalFunctions.listViewEditItem(this.hostsList, row, 7, DateTime.Now.ToString("HH:mm:ss"));
                     error = true;
                 }
 
-                if (!error)
+                if (this.Monitoring)
                 {
-                    System.Threading.Thread.Sleep(25000);
-                } else
-                {
-                    System.Threading.Thread.Sleep(5000);
+                    if (!error)
+                    {
+                        System.Threading.Thread.Sleep(25000);
+                    }
+                    else
+                    {
+                        System.Threading.Thread.Sleep(5000);
+                    }
                 }
             }
+
+            logger.LogWrite("Thread ended for host:" + host);
+            sendDebugUpdate("Thread ended for host:" + host);
+            Console.WriteLine("Thread ended");
 
             // Remove from active worker list
             this.bwList.Remove(host);
@@ -466,6 +508,7 @@ namespace EthMonitoring
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
                     logger.LogWrite("List exception: " + ex.Message);
+                    sendDebugUpdate("List exception: " + ex.ToString());
                 }
 
                 // Collect free memory
@@ -490,6 +533,7 @@ namespace EthMonitoring
                 this.startMonitoring.Text = "Stop monitoring";
                 this.removeItem.Enabled = false;
                 this.clearList.Enabled = false;
+                this.addhost.Enabled = false;
 
                 // Save token
                 settings.accessToken = tokenField.Text;
@@ -500,6 +544,7 @@ namespace EthMonitoring
                 this.Monitoring = false;
                 this.startMonitoring.Text = "Start monitoring";
                 this.removeItem.Enabled = true;
+                this.addhost.Enabled = true;
                 this.clearList.Enabled = true;
             }
         }

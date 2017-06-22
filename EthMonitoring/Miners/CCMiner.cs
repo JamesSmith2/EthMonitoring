@@ -53,6 +53,8 @@ namespace EthMonitoring
             {
                 online = false,
                 uptime = "",
+                ex = null,
+                version = "",
                 hashrates = new List<string>(),
                 dcr_hashrates = new List<string>(),
                 temps = new List<string>(),

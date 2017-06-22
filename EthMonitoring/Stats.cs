@@ -21,6 +21,9 @@ namespace EthMonitoring
         public Boolean online;
         public string uptime;
 
+        // Exception
+        public Exception ex;
+
         // Pool stats
         public int accepted;
         public int rejected;
