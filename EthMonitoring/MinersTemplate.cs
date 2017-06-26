@@ -13,5 +13,6 @@ namespace EthMonitoring
         public int port { get; set; }
         public string name { get; set; }
         public int type { get; set; }
+        public string password { get; set; }
     }
 }

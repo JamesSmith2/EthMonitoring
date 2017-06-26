@@ -12,6 +12,7 @@ namespace EthMonitoring
         // Miner stats
         public string version;
         public string total_hashrate;
+        public string total_dual_hashrate;
         public int type;
         public List<string> hashrates;
         public List<string> dcr_hashrates;
@@ -27,6 +28,8 @@ namespace EthMonitoring
         // Pool stats
         public int accepted;
         public int rejected;
+        public int dual_accepted;
+        public int dual_rejected;
 
     }
 }

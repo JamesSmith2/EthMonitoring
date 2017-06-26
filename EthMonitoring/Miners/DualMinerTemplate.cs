@@ -19,7 +19,7 @@ namespace EthMonitoring
     {
         LogWriter logger = new LogWriter();
 
-        public Stats getStats(string _host, int _port)
+        public Stats getStats(string _host, int _port, string _password)
         {
             Stats stats = new Stats()
             {
@@ -32,7 +32,10 @@ namespace EthMonitoring
                 temps = new List<string>(),
                 fan_speeds = new List<string>(),
                 power_usage = new List<string>(),
-                type = 0
+                type = 0,
+                dual_accepted = 0,
+                dual_rejected = 0,
+                total_dual_hashrate = ""
             };
 
             try
@@ -41,7 +44,7 @@ namespace EthMonitoring
 
                 if (clientSocket.ConnectAsync(_host, _port).Wait(5000))
                 {
-                    string get_menu_request = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"miner_getstat1\"}";
+                    string get_menu_request = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"miner_getstat1\",\"psw\":\"" + _password + "\"}";
                     NetworkStream serverStream = clientSocket.GetStream();
                     byte[] outStream = System.Text.Encoding.ASCII.GetBytes(get_menu_request);
                     serverStream.Write(outStream, 0, outStream.Length);
@@ -54,6 +57,8 @@ namespace EthMonitoring
                     if (_returndata.Length == 0)
                         throw new Exception("Invalid data");
 
+                    Console.WriteLine(_returndata);
+
                     EthMonJsonTemplate result = JsonConvert.DeserializeObject<EthMonJsonTemplate>(_returndata);
 
                     stats.version = result.result[0]; // Version
@@ -64,6 +69,11 @@ namespace EthMonitoring
                     stats.accepted = Int32.Parse(miner_stats[1]);
                     stats.rejected = Int32.Parse(miner_stats[2]);
 
+                    // Dual Stats
+                    string[] dual_stats = result.result[4].Split(';');
+                    stats.total_dual_hashrate = dual_stats[0];
+                    stats.dual_accepted = Int32.Parse(dual_stats[1]);
+                    stats.dual_rejected = Int32.Parse(dual_stats[2]);
 
                     string[] hashrates = result.result[3].Split(';'); // ETH Hashrates
 

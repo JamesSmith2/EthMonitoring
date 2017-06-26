@@ -44,6 +44,7 @@
             this.temp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.version = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.updated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hostName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.removeItem = new System.Windows.Forms.Button();
@@ -52,13 +53,15 @@
             this.minerType = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.themeButton = new System.Windows.Forms.Button();
-            this.updated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.passwordField = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.password = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // startMonitoring
             // 
             this.startMonitoring.Location = new System.Drawing.Point(993, 22);
-            this.startMonitoring.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startMonitoring.Margin = new System.Windows.Forms.Padding(4);
             this.startMonitoring.Name = "startMonitoring";
             this.startMonitoring.Size = new System.Drawing.Size(184, 44);
             this.startMonitoring.TabIndex = 0;
@@ -80,7 +83,7 @@
             // 
             this.tokenField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tokenField.Location = new System.Drawing.Point(16, 34);
-            this.tokenField.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tokenField.Margin = new System.Windows.Forms.Padding(4);
             this.tokenField.Name = "tokenField";
             this.tokenField.Size = new System.Drawing.Size(969, 22);
             this.tokenField.TabIndex = 3;
@@ -99,15 +102,15 @@
             // 
             this.hostField.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hostField.Location = new System.Drawing.Point(16, 82);
-            this.hostField.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hostField.Margin = new System.Windows.Forms.Padding(4);
             this.hostField.Name = "hostField";
             this.hostField.Size = new System.Drawing.Size(149, 22);
             this.hostField.TabIndex = 5;
             // 
             // addhost
             // 
-            this.addhost.Location = new System.Drawing.Point(523, 81);
-            this.addhost.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addhost.Location = new System.Drawing.Point(670, 80);
+            this.addhost.Margin = new System.Windows.Forms.Padding(4);
             this.addhost.Name = "addhost";
             this.addhost.Size = new System.Drawing.Size(100, 28);
             this.addhost.TabIndex = 6;
@@ -147,9 +150,10 @@
             this.temp,
             this.version,
             this.type,
-            this.updated});
+            this.updated,
+            this.password});
             this.hostsList.Location = new System.Drawing.Point(16, 130);
-            this.hostsList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hostsList.Margin = new System.Windows.Forms.Padding(4);
             this.hostsList.Name = "hostsList";
             this.hostsList.Size = new System.Drawing.Size(1160, 310);
             this.hostsList.TabIndex = 9;
@@ -196,11 +200,17 @@
             this.type.DisplayIndex = 2;
             this.type.Text = "Type";
             // 
+            // updated
+            // 
+            this.updated.DisplayIndex = 0;
+            this.updated.Text = "Updated";
+            this.updated.Width = 87;
+            // 
             // hostName
             // 
             this.hostName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hostName.Location = new System.Drawing.Point(173, 82);
-            this.hostName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hostName.Margin = new System.Windows.Forms.Padding(4);
             this.hostName.Name = "hostName";
             this.hostName.Size = new System.Drawing.Size(171, 22);
             this.hostName.TabIndex = 10;
@@ -218,7 +228,7 @@
             // removeItem
             // 
             this.removeItem.Location = new System.Drawing.Point(16, 449);
-            this.removeItem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.removeItem.Margin = new System.Windows.Forms.Padding(4);
             this.removeItem.Name = "removeItem";
             this.removeItem.Size = new System.Drawing.Size(200, 30);
             this.removeItem.TabIndex = 12;
@@ -229,7 +239,7 @@
             // clearList
             // 
             this.clearList.Location = new System.Drawing.Point(225, 450);
-            this.clearList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.clearList.Margin = new System.Windows.Forms.Padding(4);
             this.clearList.Name = "clearList";
             this.clearList.Size = new System.Drawing.Size(137, 28);
             this.clearList.TabIndex = 13;
@@ -254,7 +264,7 @@
             "EWBF",
             "CCMiner"});
             this.minerType.Location = new System.Drawing.Point(353, 82);
-            this.minerType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.minerType.Margin = new System.Windows.Forms.Padding(4);
             this.minerType.Name = "minerType";
             this.minerType.Size = new System.Drawing.Size(160, 24);
             this.minerType.TabIndex = 16;
@@ -272,7 +282,7 @@
             // themeButton
             // 
             this.themeButton.Location = new System.Drawing.Point(1077, 450);
-            this.themeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.themeButton.Margin = new System.Windows.Forms.Padding(4);
             this.themeButton.Name = "themeButton";
             this.themeButton.Size = new System.Drawing.Size(100, 28);
             this.themeButton.TabIndex = 18;
@@ -280,11 +290,26 @@
             this.themeButton.UseVisualStyleBackColor = true;
             this.themeButton.Click += new System.EventHandler(this.themeButton_Click);
             // 
-            // updated
+            // passwordField
             // 
-            this.updated.DisplayIndex = 0;
-            this.updated.Text = "Updated";
-            this.updated.Width = 87;
+            this.passwordField.Location = new System.Drawing.Point(520, 82);
+            this.passwordField.Name = "passwordField";
+            this.passwordField.Size = new System.Drawing.Size(143, 22);
+            this.passwordField.TabIndex = 19;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(517, 63);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 17);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "Password";
+            // 
+            // password
+            // 
+            this.password.Text = "Password";
             // 
             // Form1
             // 
@@ -292,6 +317,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1193, 490);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.passwordField);
             this.Controls.Add(this.themeButton);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.minerType);
@@ -310,7 +337,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.startMonitoring);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
@@ -347,6 +374,9 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button themeButton;
         private System.Windows.Forms.ColumnHeader updated;
+        private System.Windows.Forms.TextBox passwordField;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ColumnHeader password;
     }
 }
 

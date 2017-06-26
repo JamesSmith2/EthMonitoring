@@ -18,7 +18,8 @@ namespace EthMonitoring
 {
     public partial class Form1 : Form
     {
-        private string Version = "0.0.14";
+        private string Version = "0.0.16";
+        private string apiVersion = "2.0";
 
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
@@ -73,6 +74,7 @@ namespace EthMonitoring
                         newHost.SubItems.Add("CCMiner"); // TYPE
                     }
                     newHost.SubItems.Add("-"); // Last updated
+                    newHost.SubItems.Add(entry.password);
 
                     hostsList.Items.Add(newHost);
 
@@ -145,6 +147,7 @@ namespace EthMonitoring
                     newHost.SubItems.Add(""); // VERSION
                     newHost.SubItems.Add(minerType.Text); // Type
                     newHost.SubItems.Add("-"); // Last updated
+                    newHost.SubItems.Add(passwordField.Text); // Password field
 
                     hostsList.Items.Add(newHost);
 
@@ -152,6 +155,7 @@ namespace EthMonitoring
                     MinersTemplate miner = new MinersTemplate();
                     miner.name = hostName.Text;
                     miner.host = hostField.Text;
+                    miner.password = passwordField.Text;
                     if (minerType.Text == "Claymore")
                     {
                         miner.type = 0; // Claymore
@@ -174,6 +178,7 @@ namespace EthMonitoring
                     // Clear values
                     hostField.Text = "";
                     hostName.Text = "";
+                    passwordField.Text = "";
                 }
             } catch (Exception ex)
             {
@@ -220,7 +225,7 @@ namespace EthMonitoring
                     values["data"] = JsonConvert.SerializeObject(_stats);
                     values["host"] = _host;
                     values["name"] = _name;
-                    values["version"] = "1.8";
+                    values["version"] = this.apiVersion;
 
                     var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/update", "POST", values);
 
@@ -245,7 +250,7 @@ namespace EthMonitoring
                     var values = new NameValueCollection();
                     values["token"] = tokenField.Text;
                     values["debug"] = _debug;
-                    values["version"] = "1.8";
+                    values["version"] = this.apiVersion;
 
                     var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/debug", "POST", values);
                 }
@@ -277,12 +282,14 @@ namespace EthMonitoring
                 Console.WriteLine("Host parsing error: " + host);
             }
 
-            string name = hostRow.SubItems[1].Text;
-            string type = hostRow.SubItems[6].Text;
-
             while (this.Monitoring && hostRow != null)
             {
                 bool error = false;
+                
+                string name = hostRow.SubItems[1].Text;
+                string type = hostRow.SubItems[6].Text;
+                string password = hostRow.SubItems[8].Text;
+
                 try
                 {
 
@@ -296,7 +303,7 @@ namespace EthMonitoring
                         }
                         // Retrieve EWBF stats
                         DualMinerTemplate miner = new DualMinerTemplate();
-                        stats = miner.getStats(host, port);
+                        stats = miner.getStats(host, port, password);
                     }
                     else if (type == "EWBF")
                     {

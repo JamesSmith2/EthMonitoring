@@ -41,7 +41,10 @@ namespace EthMonitoring
                 temps = new List<string>(),
                 fan_speeds = new List<string>(),
                 power_usage = new List<string>(),
-                type = 2
+                type = 2,
+                dual_accepted = 0,
+                dual_rejected = 0,
+                total_dual_hashrate = ""
             };
             
             try
