@@ -26,6 +26,10 @@ Claymore's Dual Ethereum GPU Miner monitoring with SMS Support
 - Telegram support
 - SMS Support
 
+# Requirements
+
+- This tool required .NET Framework 4.6.1 installed (https://www.microsoft.com/en-us/download/details.aspx?id=49981)
+
 # How to use
 
 This release supports only windows systems. 
