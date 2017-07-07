@@ -29,6 +29,8 @@ namespace EthMonitoring
                 serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
                 string _returndata = System.Text.Encoding.ASCII.GetString(inStream);
                 minerData = _returndata.Substring(0, _returndata.LastIndexOf("|") + 1);
+
+                Console.WriteLine(minerData);
             }
             else
             {
@@ -92,11 +94,21 @@ namespace EthMonitoring
                     {
                         for (int i = 0; i < (gpus.Length-1); i++) {
                             string[] gpu = gpus[i].Split(';');
+                            double hashrate = 0;
+                            int wattage = 0;
 
-                            double hashrate = double.Parse(gpu[8].Split('=')[1].Split('.')[0]);
-                            int wattage = int.Parse(gpu[4].Split('=')[1]) / 1000;
+                            if (version == "2.0")
+                            {
+                                hashrate = double.Parse(gpu[11].Split('=')[1].Split('.')[0]);
+                                wattage = int.Parse(gpu[4].Split('=')[1]) / 1000;
+                            }
+                            else
+                            {
+                                hashrate = double.Parse(gpu[8].Split('=')[1].Split('.')[0]);
+                                wattage = int.Parse(gpu[4].Split('=')[1]) / 1000;
+                            }
 
-                            stats.hashrates.Add(gpu[8].Split('=')[1].Split('.')[0]);
+                            stats.hashrates.Add(hashrate.ToString());
                             stats.temps.Add(gpu[3].Split('=')[1]);
                             stats.power_usage.Add(wattage.ToString());
                             stats.fan_speeds.Add(gpu[5].Split('=')[1]);

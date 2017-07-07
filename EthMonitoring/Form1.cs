@@ -369,8 +369,14 @@ namespace EthMonitoring
                             {
                                 for (int i = 0; i < stats.dcr_hashrates.Count; i++)
                                 {
-                                    double hashrate = Double.Parse(stats.dcr_hashrates[i]) / 1000;
-                                    dcr_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Hashrate
+                                    if (stats.dcr_hashrates[i] != "off")
+                                    {
+                                        double hashrate = Double.Parse(stats.dcr_hashrates[i]) / 1000;
+                                        dcr_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Hashrate
+                                    } else
+                                    {
+                                        dcr_hashrate += "GPU" + i + ": off";
+                                    }
 
                                 }
 

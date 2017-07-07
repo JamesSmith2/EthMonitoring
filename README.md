@@ -1,5 +1,6 @@
 # EthMonitoring
-Claymore's Dual Ethereum GPU Miner monitoring with SMS Support
+
+Mining monitoring tool with Android and iOS application support. Also supports Telegram, SMS and Push notifications with custom sounds.
 
 # Current version
 
