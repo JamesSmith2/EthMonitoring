@@ -2,6 +2,10 @@
 
 Mining monitoring tool with Android and iOS application support. Also supports Telegram, SMS and Push notifications with custom sounds.
 
+# For linux version check this:
+
+https://github.com/JamesSmith2/EthMonitoringLinux
+
 # Current version
 
 - Support SMS Sending when:

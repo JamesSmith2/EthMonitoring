@@ -45,6 +45,7 @@
             this.version = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.updated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.password = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.hostName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.removeItem = new System.Windows.Forms.Button();
@@ -55,7 +56,6 @@
             this.themeButton = new System.Windows.Forms.Button();
             this.passwordField = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.password = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // startMonitoring
@@ -206,6 +206,10 @@
             this.updated.Text = "Updated";
             this.updated.Width = 87;
             // 
+            // password
+            // 
+            this.password.Text = "Password";
+            // 
             // hostName
             // 
             this.hostName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -307,14 +311,11 @@
             this.label7.TabIndex = 20;
             this.label7.Text = "Password";
             // 
-            // password
-            // 
-            this.password.Text = "Password";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1193, 490);
             this.Controls.Add(this.label7);
