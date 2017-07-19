@@ -105,7 +105,7 @@
             this.hostField.Margin = new System.Windows.Forms.Padding(4);
             this.hostField.Name = "hostField";
             this.hostField.Size = new System.Drawing.Size(149, 22);
-            this.hostField.TabIndex = 5;
+            this.hostField.TabIndex = 1;
             // 
             // addhost
             // 
@@ -136,7 +136,6 @@
             this.tokenLink.Name = "tokenLink";
             this.tokenLink.Size = new System.Drawing.Size(202, 17);
             this.tokenLink.TabIndex = 8;
-            this.tokenLink.TabStop = true;
             this.tokenLink.Text = "Get your auth token from here!";
             this.tokenLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.tokenLink_LinkClicked);
             // 
@@ -217,7 +216,7 @@
             this.hostName.Margin = new System.Windows.Forms.Padding(4);
             this.hostName.Name = "hostName";
             this.hostName.Size = new System.Drawing.Size(171, 22);
-            this.hostName.TabIndex = 10;
+            this.hostName.TabIndex = 2;
             // 
             // label4
             // 
@@ -299,7 +298,7 @@
             this.passwordField.Location = new System.Drawing.Point(520, 82);
             this.passwordField.Name = "passwordField";
             this.passwordField.Size = new System.Drawing.Size(143, 22);
-            this.passwordField.TabIndex = 19;
+            this.passwordField.TabIndex = 3;
             // 
             // label7
             // 
@@ -342,7 +341,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
-            this.Text = "Dual miner monitoring v0.0.8";
+            this.Text = "Dual miner monitoring v0.0.17";
             this.ResumeLayout(false);
             this.PerformLayout();
 

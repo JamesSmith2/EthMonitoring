@@ -29,8 +29,6 @@ namespace EthMonitoring
                 serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
                 string _returndata = System.Text.Encoding.ASCII.GetString(inStream);
                 minerData = _returndata.Substring(0, _returndata.LastIndexOf("|") + 1);
-
-                Console.WriteLine(minerData);
             }
             else
             {

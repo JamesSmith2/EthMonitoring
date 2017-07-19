@@ -18,8 +18,8 @@ namespace EthMonitoring
 {
     public partial class Form1 : Form
     {
-        private string Version = "0.0.16";
-        private string apiVersion = "2.0";
+        private string Version = "0.0.17";
+        private string apiVersion = "2.1";
 
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
@@ -100,6 +100,7 @@ namespace EthMonitoring
                 this.label4.ForeColor = Color.FromArgb(255, 255, 255);
                 this.label5.ForeColor = Color.FromArgb(255, 255, 255);
                 this.label6.ForeColor = Color.FromArgb(255, 255, 255);
+                this.label7.ForeColor = Color.FromArgb(255, 255, 255);
 
                 // Boxes
                 this.tokenField.BackColor = Color.FromArgb(106, 106, 106);
@@ -107,6 +108,9 @@ namespace EthMonitoring
 
                 this.hostField.BackColor = Color.FromArgb(106, 106, 106);
                 this.hostField.ForeColor = Color.FromArgb(255, 255, 255);
+
+                this.passwordField.BackColor = Color.FromArgb(106, 106, 106);
+                this.passwordField.ForeColor = Color.FromArgb(255, 255, 255);
 
                 this.hostName.BackColor = Color.FromArgb(106, 106, 106);
                 this.hostName.ForeColor = Color.FromArgb(255, 255, 255);
@@ -128,6 +132,7 @@ namespace EthMonitoring
                 this.label4.ForeColor = Color.FromArgb(0, 0, 0);
                 this.label5.ForeColor = Color.FromArgb(0, 0, 0);
                 this.label6.ForeColor = Color.FromArgb(0, 0, 0);
+                this.label7.ForeColor = Color.FromArgb(0, 0, 0);
                 this.tokenLink.LinkColor = Color.FromArgb(0, 0, 0);
             }
         }
@@ -324,104 +329,117 @@ namespace EthMonitoring
                         CCMiner miner = new CCMiner();
                         stats = miner.getStats(host, port);
                     }
-
+                    
                     if (stats.online && stats.version.Length > 0)
                     {
-                        GlobalFunctions.listViewEditItem(this.hostsList, row, 5, stats.version); // Version
+                        try
+                        {
+                            GlobalFunctions.listViewEditItem(this.hostsList, row, 5, stats.version); // Version
 
-                        // ETH Hashrates
-                        string eth_hashrate = "";
-                        if (stats.hashrates.Count > 0 && stats.hashrates[0] == "off")
-                        {
-                            GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "Mode 2 activated");
-                        }
-                        else
-                        {
-                            for (int i = 0; i < stats.hashrates.Count; i++)
+                            // ETH Hashrates
+                            string eth_hashrate = "";
+                            if (stats.hashrates.Count > 0 && stats.hashrates[0] == "off")
                             {
-                                if (type == "Claymore" || type == "CCMiner")
+                                GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "Mode 2 activated");
+                            }
+                            else
+                            {
+                                for (int i = 0; i < stats.hashrates.Count; i++)
                                 {
-                                    double hashrate = double.Parse(stats.hashrates[i]) / 1000;
-                                    eth_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Hashrate
+                                    if (type == "Claymore" || type == "CCMiner")
+                                    {
+                                        double hashrate = 0;
+                                        if (Double.TryParse(stats.hashrates[i], out hashrate))
+                                        {
+                                            hashrate = double.Parse(stats.hashrates[i]) / 1000;
+                                        }
+                                        eth_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Hashrate
+                                    }
+                                    else if (type == "EWBF")
+                                    {
+                                        eth_hashrate += "GPU" + i + ": " + stats.hashrates[i] + " Sol/s "; // Hashrate
+                                    }
+                                    else
+                                    {
+                                        eth_hashrate += "GPU" + i + ": " + stats.hashrates[i] + "Mh/s "; // Hashrate
+                                    }
                                 }
-                                else if (type == "EWBF")
+                            }
+
+                            GlobalFunctions.listViewEditItem(this.hostsList, row, 2, eth_hashrate); // ETH HR
+
+                            if (type == "Claymore" && stats.dcr_hashrates.Count > 0)
+                            {
+                                // DCR Hashrates
+                                string dcr_hashrate = "";
+                                if (stats.dcr_hashrates[0] == "off")
                                 {
-                                    eth_hashrate += "GPU" + i + ": " + stats.hashrates[i] + " Sol/s "; // Hashrate
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "Mode 1 activated");
                                 }
                                 else
                                 {
-                                    eth_hashrate += "GPU" + i + ": " + stats.hashrates[i] + "Mh/s "; // Hashrate
-                                }
-                            }
-                        }
-
-                        GlobalFunctions.listViewEditItem(this.hostsList, row, 2, eth_hashrate); // ETH HR
-
-                        if (type == "Claymore" && stats.dcr_hashrates.Count > 0)
-                        {
-                            // DCR Hashrates
-                            string dcr_hashrate = "";
-                            if (stats.dcr_hashrates[0] == "off")
-                            {
-                                GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "Mode 1 activated");
-                            }
-                            else
-                            {
-                                for (int i = 0; i < stats.dcr_hashrates.Count; i++)
-                                {
-                                    if (stats.dcr_hashrates[i] != "off")
+                                    for (int i = 0; i < stats.dcr_hashrates.Count; i++)
                                     {
-                                        double hashrate = Double.Parse(stats.dcr_hashrates[i]) / 1000;
-                                        dcr_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Hashrate
-                                    } else
-                                    {
-                                        dcr_hashrate += "GPU" + i + ": off";
+                                        double hashrate;
+                                        if (stats.dcr_hashrates[i] != "off" && Double.TryParse(stats.dcr_hashrates[i], out hashrate))
+                                        {
+                                            hashrate = hashrate / 1000;
+                                            dcr_hashrate += "GPU" + i + ": " + hashrate.ToString() + "Mh/s "; // Hashrate
+                                        }
+                                        else
+                                        {
+                                            dcr_hashrate += "GPU" + i + ": off";
+                                        }
+
                                     }
 
+                                    GlobalFunctions.listViewEditItem(this.hostsList, row, 3, dcr_hashrate); // DCR HR
                                 }
-
-                                GlobalFunctions.listViewEditItem(this.hostsList, row, 3, dcr_hashrate); // DCR HR
-                            }
-                        }
-                        else
-                        {
-                            GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "-");
-                        }
-
-                        // Temps
-                        string temps = "";
-
-                        for (int i = 0; i < stats.temps.Count; i++)
-                        {
-                            if (type == "Claymore")
-                            {
-                                if (stats.fan_speeds.Count > 0)
-                                {
-                                    temps += "GPU" + i + ": " + stats.temps[i] + "C (FAN: " + stats.fan_speeds[i] + "%) "; // Temps
-                                } else
-                                {
-                                    temps += "GPU" + i + ": " + stats.temps[i] + "C"; // Temps
-                                }
-                            }
-                            else if (type == "CCMiner")
-                            {
-                                if (stats.power_usage.Count > 0 && stats.fan_speeds.Count > 0 && stats.temps.Count > 0)
-                                {
-                                    temps += "GPU" + i + ": " + stats.temps[i] + "C (" + stats.power_usage[i] + "W / " + stats.fan_speeds[i] + "%)"; // Temps
-                                } 
                             }
                             else
                             {
-                                temps += "GPU" + i + ": " + stats.temps[i] + "C (" + stats.power_usage[i] + "W) "; // Temps
+                                GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "-");
                             }
-                            i++;
+
+                            // Temps
+                            string temps = "";
+
+                            for (int i = 0; i < stats.temps.Count; i++)
+                            {
+                                if (type == "Claymore")
+                                {
+                                    if (stats.fan_speeds.Count > 0)
+                                    {
+                                        temps += "GPU" + i + ": " + stats.temps[i] + "C (FAN: " + stats.fan_speeds[i] + "%) "; // Temps
+                                    }
+                                    else
+                                    {
+                                        temps += "GPU" + i + ": " + stats.temps[i] + "C"; // Temps
+                                    }
+                                }
+                                else if (type == "CCMiner")
+                                {
+                                    if (stats.power_usage.Count > 0 && stats.fan_speeds.Count > 0 && stats.temps.Count > 0)
+                                    {
+                                        temps += "GPU" + i + ": " + stats.temps[i] + "C (" + stats.power_usage[i] + "W / " + stats.fan_speeds[i] + "%)"; // Temps
+                                    }
+                                }
+                                else
+                                {
+                                    temps += "GPU" + i + ": " + stats.temps[i] + "C (" + stats.power_usage[i] + "W) "; // Temps
+                                }
+                                i++;
+                            }
+
+                            GlobalFunctions.listViewEditItem(this.hostsList, row, 4, temps);
+                            GlobalFunctions.listViewEditItem(this.hostsList, row, 7, DateTime.Now.ToString("HH:mm:ss"));
+
+                            GlobalFunctions.updateColumnSizesForListView(this.hostsList);
                         }
-
-                        GlobalFunctions.listViewEditItem(this.hostsList, row, 4, temps);
-                        GlobalFunctions.listViewEditItem(this.hostsList, row, 7, DateTime.Now.ToString("HH:mm:ss"));
-
-                        GlobalFunctions.updateColumnSizesForListView(this.hostsList);
-
+                        catch (Exception ex)
+                        {
+                            sendDebugUpdate("Miner display exception (type: " + type + "): " +ex.ToString());
+                        }
                         // Update web database for SMS Services
                         sendAPIUpdate(stats, host, name);
 
