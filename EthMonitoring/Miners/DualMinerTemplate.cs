@@ -111,6 +111,9 @@ namespace EthMonitoring
                     clientSocket = null;
 
                     stats.online = true; // Online
+                } else
+                {
+
                 }
             }
             catch (Exception ex)

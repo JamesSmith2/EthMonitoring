@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -94,15 +95,28 @@ namespace EthMonitoring
                             string[] gpu = gpus[i].Split(';');
                             double hashrate = 0;
                             int wattage = 0;
+                            var culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+                            culture.NumberFormat.NumberDecimalSeparator = ".";
+                            float _version = 0;
+                            try
+                            {
+                                _version = float.Parse(version, culture);
+                            } catch(Exception ex)
+                            {
 
-                            if (version == "2.0")
+                            }
+                            if (_version >= 2.0)
                             {
                                 hashrate = double.Parse(gpu[11].Split('=')[1].Split('.')[0]);
                                 wattage = int.Parse(gpu[4].Split('=')[1]) / 1000;
                             }
-                            else
+                            else if(version == "alexis-1.0")
                             {
                                 hashrate = double.Parse(gpu[8].Split('=')[1].Split('.')[0]);
+                                wattage = int.Parse(gpu[4].Split('=')[1]) / 1000;
+                            } else
+                            {
+                                hashrate = double.Parse(gpu[11].Split('=')[1].Split('.')[0]);
                                 wattage = int.Parse(gpu[4].Split('=')[1]) / 1000;
                             }
 

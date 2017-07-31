@@ -16,10 +16,20 @@ using System.Windows.Forms;
 
 namespace EthMonitoring
 {
+    public class WebClientWithTimeout : WebClient
+    {
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            WebRequest wr = base.GetWebRequest(address);
+            wr.Timeout = 2000; // timeout in milliseconds (ms)
+            return wr;
+        }
+    }
+
     public partial class Form1 : Form
     {
-        private string Version = "0.0.17";
-        private string apiVersion = "2.1";
+        private string Version = "0.0.18";
+        private string apiVersion = "2.2";
 
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
@@ -201,7 +211,7 @@ namespace EthMonitoring
         {
             string serviceToken = tokenField.Text;
 
-            using (var client = new WebClient())
+            using (var client = new WebClientWithTimeout())
             {
                 var values = new NameValueCollection();
                 values["token"] = tokenField.Text;
@@ -223,7 +233,7 @@ namespace EthMonitoring
             {
                 string serviceToken = tokenField.Text;
 
-                using (var client = new WebClient())
+                using (var client = new WebClientWithTimeout())
                 {
                     var values = new NameValueCollection();
                     values["token"] = tokenField.Text;
@@ -232,7 +242,7 @@ namespace EthMonitoring
                     values["name"] = _name;
                     values["version"] = this.apiVersion;
 
-                    var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/update", "POST", values);
+                    var response = client.UploadValues("https://ethmonitoring.com/api/update", "POST", values);
 
                     //var responseString = Encoding.Default.GetString(response);
 
@@ -250,14 +260,14 @@ namespace EthMonitoring
             {
                 string serviceToken = tokenField.Text;
 
-                using (var client = new WebClient())
+                using (var client = new WebClientWithTimeout())
                 {
                     var values = new NameValueCollection();
                     values["token"] = tokenField.Text;
                     values["debug"] = _debug;
                     values["version"] = this.apiVersion;
 
-                    var response = client.UploadValues("https://monitoring.mylifegadgets.com/api/debug", "POST", values);
+                    var response = client.UploadValues("https://ethmonitoring.com/api/debug", "POST", values);
                 }
             }
             catch (Exception ex)
@@ -451,10 +461,13 @@ namespace EthMonitoring
                         if (stats.ex != null)
                         {
                             sendDebugUpdate("Host socket exception (Offline | type: " + type + "): " + stats.ex.ToString());
+                            GlobalFunctions.listViewEditItem(this.hostsList, row, 2, stats.ex.Message.ToString());
+                        } else
+                        {
+                            GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "OFFLINE");
                         }
 
                         // Set values
-                        GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
                         GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
@@ -474,7 +487,7 @@ namespace EthMonitoring
                     sendAPIUpdate("", host, name);
 
                     // Set values
-                    GlobalFunctions.listViewEditItem(this.hostsList, row, 2, "OFFLINE");
+                    GlobalFunctions.listViewEditItem(this.hostsList, row, 2, ex.Message.ToString());
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 3, "OFFLINE");
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 4, "OFFLINE");
                     GlobalFunctions.listViewEditItem(this.hostsList, row, 5, "OFFLINE");
@@ -484,23 +497,16 @@ namespace EthMonitoring
 
                 if (this.Monitoring)
                 {
-                    if (!error)
-                    {
-                        System.Threading.Thread.Sleep(25000);
-                    }
-                    else
-                    {
-                        System.Threading.Thread.Sleep(5000);
-                    }
+                    System.Threading.Thread.Sleep(15000);
                 }
             }
+
+            // Remove from active worker list
+            this.bwList.Remove(host);
 
             logger.LogWrite("Thread ended for host:" + host);
             sendDebugUpdate("Thread ended for host:" + host);
             Console.WriteLine("Thread ended");
-
-            // Remove from active worker list
-            this.bwList.Remove(host);
         }
 
         private void monitoringHosts(object sender, System.ComponentModel.DoWorkEventArgs e)
