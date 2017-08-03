@@ -110,7 +110,7 @@ namespace EthMonitoring
                                 hashrate = double.Parse(gpu[11].Split('=')[1].Split('.')[0]);
                                 wattage = int.Parse(gpu[4].Split('=')[1]) / 1000;
                             }
-                            else if(version == "alexis-1.0")
+                            else if(version == "alexis-1.0" || version == "alexis-1.0 palgin skunkmod" || version == "SkunkSPmod1" || version == "SkunkSPmod2" || version == "SkunkSPmod3")
                             {
                                 hashrate = double.Parse(gpu[8].Split('=')[1].Split('.')[0]);
                                 wattage = int.Parse(gpu[4].Split('=')[1]) / 1000;
