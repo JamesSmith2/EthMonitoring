@@ -19,8 +19,10 @@ https://github.com/JamesSmith2/EthMonitoringLinux
 
 - Supports multiple miners with one local software installed.
 - Supports EWBF API
-- Supports Claymore's Dual Ethereum GPU Miner 9.3-9.4
+- Supports Claymore's Dual Ethereum GPU Miner 9.3-9.8
 - Supports CCMiner-Alexis 1.0
+- Supports SGMiner
+- Supports Excavator by NiceHash
 
 # Web service
 
@@ -41,7 +43,11 @@ This release supports only windows systems.
 
 Multiple miners supported, only needed to install one of the local miners. 
 
-Access token can be received and monitored from here: http://monitoring.mylifegadgets.com
+Access token can be received and monitored from here: https://ethmonitoring.com
+
+# Guide
+
+- Full guide available here: https://ethmonitoring.com/site/guide
 
 # Steps
 
@@ -54,9 +60,6 @@ Access token can be received and monitored from here: http://monitoring.mylifega
 - Insert token to box and press "Start monitoring"
 
 - Data will be uploaded to site and notifications can be added from there.
-
-- SMS Services are used by https://textbelt.com API key can be collected from that site and inserted in settings section on the web.
-
 
 # How to update
 
