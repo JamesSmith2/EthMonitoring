@@ -28,8 +28,8 @@ namespace EthMonitoring
 
     public partial class Form1 : Form
     {
-        private string Version = "0.0.19";
-        private string apiVersion = "2.3";
+        private string Version = "0.0.20";
+        private string apiVersion = "2.4";
 
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
@@ -79,7 +79,16 @@ namespace EthMonitoring
                     else if (entry.type == 2)
                     {
                         newHost.SubItems.Add("EWBF"); // TYPE
-                    } else
+                    }
+                    else if (entry.type == 7)
+                    {
+                        newHost.SubItems.Add("SGMiner"); // TYPE
+                    }
+                    else if (entry.type == 8)
+                    {
+                        newHost.SubItems.Add("Excavator"); // TYPE
+                    }
+                    else
                     {
                         newHost.SubItems.Add("CCMiner"); // TYPE
                     }
@@ -178,6 +187,14 @@ namespace EthMonitoring
                     else if (minerType.Text == "EWBF")
                     {
                         miner.type = 2; // EWBF
+                    }
+                    else if (minerType.Text == "SGMiner")
+                    {
+                        miner.type = 7; // SGMiner
+                    }
+                    else if (minerType.Text == "Excavator")
+                    {
+                        miner.type = 8; // Excavator
                     }
                     else
                     {
@@ -330,6 +347,26 @@ namespace EthMonitoring
                         EWBF miner = new EWBF();
                         stats = miner.getStats(host, port);
                     }
+                    else if (type == "SGMiner")
+                    {
+                        if (port == 0)
+                        {
+                            port = 4028;
+                        }
+                        // Retrieve SGMiner stats
+                        SGMiner miner = new SGMiner();
+                        stats = miner.getStats(host, port);
+                    }
+                    else if (type == "Excavator")
+                    {
+                        if (port == 0)
+                        {
+                            port = 3456;
+                        }
+                        // Retrieve Excavator stats
+                        Excavator miner = new Excavator();
+                        stats = miner.getStats(host, port);
+                    }
                     else
                     {
                         if (port == 0)
@@ -368,6 +405,10 @@ namespace EthMonitoring
                                     else if (type == "EWBF")
                                     {
                                         eth_hashrate += "GPU" + i + ": " + stats.hashrates[i] + " Sol/s "; // Hashrate
+                                    }
+                                    else if (type == "Excavator")
+                                    {
+                                        eth_hashrate += "GPU" + i + ": " + stats.hashrates[i] + " H/s "; // Hashrate
                                     }
                                     else
                                     {
@@ -416,7 +457,7 @@ namespace EthMonitoring
 
                             for (int i = 0; i < stats.temps.Count; i++)
                             {
-                                if (type == "Claymore")
+                                if (type == "Claymore" || type == "SGMiner" || type == "Excavator")
                                 {
                                     if (stats.fan_speeds.Count > 0)
                                     {

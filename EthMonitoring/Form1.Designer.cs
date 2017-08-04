@@ -265,7 +265,9 @@
             this.minerType.Items.AddRange(new object[] {
             "Claymore",
             "EWBF",
-            "CCMiner"});
+            "CCMiner",
+            "SGMiner",
+            "Excavator"});
             this.minerType.Location = new System.Drawing.Point(353, 82);
             this.minerType.Margin = new System.Windows.Forms.Padding(4);
             this.minerType.Name = "minerType";
