@@ -53,8 +53,8 @@ namespace EthMonitoring
             }
             else
             {
-                //varListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                //varListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                varListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                varListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             }
         }
 

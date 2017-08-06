@@ -28,8 +28,8 @@ namespace EthMonitoring
 
     public partial class Form1 : Form
     {
-        private string Version = "0.0.20";
-        private string apiVersion = "2.4";
+        private string Version = "0.0.21";
+        private string apiVersion = "2.5";
 
         private BackgroundWorker bw;
         private Boolean Monitoring = false;
