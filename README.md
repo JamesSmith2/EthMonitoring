@@ -1,3 +1,7 @@
+# Source code
+
+This source code is out of date, latest version available as compiled.
+
 # EthMonitoring
 
 Mining monitoring tool with Android and iOS application support. Also supports Telegram, SMS and Push notifications with custom sounds.
@@ -76,13 +80,3 @@ When downloading new files, extract them over or copy settings.json file to new 
 - Claymore's Dual Ethereum + Decred/Siacoin/Lbry/Pascal AMD+NVIDIA GPU Miner. https://bitcointalk.org/index.php?topic=1433925.0
 - EWBF's CUDA Zcash miner https://bitcointalk.org/index.php?topic=1707546.0
 - CCMiner-Alexis 1.0
-
-# Developer
-
-This software is free to use for everbody, but you can always support the developer: 
-
-BTC: 1JUrgoekaQm7H4ARrvduGGCmWkrzUoxKBk
-
-ETH: 0xD9B9200eE4017A0E07089629475DbaBA611Fc4e6
-
-ZEC: t1VUN4kfNiZQmwZ7dL3X6XujrCU3A6VMfbh
