@@ -1,3 +1,7 @@
+# EthMonitoring to MinerMonitoring
+
+We are moving everything to our new brand MinerMonitoring. new latest software is available here: https://github.com/JamesSmith2/MinerMonitor
+
 # Source code
 
 This source code is out of date, latest version available as compiled.
